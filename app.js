@@ -8,31 +8,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var arregloDeCervezas = [
-        {
-            Id: 1,
-            Name: 'Golden',
-            Brewery: 'Kross',
-            Country: 'Chile',
-            Price: 10.5,
-            Currency: 'EUR'
-        },
-        {
-            Id: 2,
-            Name: 'Royal',
-            Brewery: 'Brewery Royal',
-            Country: 'Country Royal',
-            Price: 10.5,
-            Currency: 'ROY'
-        },
-        {
-            Id: 3,
-            Name: 'Escudo',
-            Brewery: 'Escudo Royal',
-            Country: 'Country Escudo',
-            Price: 10.5,
-            Currency: 'ESC'
-        }
-    ];
+    {
+        Id: 1,
+        Name: 'Golden',
+        Brewery: 'Kross',
+        Country: 'Chile',
+        Price: 10.5,
+        Currency: 'EUR'
+    },
+    {
+        Id: 2,
+        Name: 'Royal',
+        Brewery: 'Brewery Royal',
+        Country: 'Country Royal',
+        Price: 10.5,
+        Currency: 'ROY'
+    },
+    {
+        Id: 3,
+        Name: 'Escudo',
+        Brewery: 'Escudo Royal',
+        Country: 'Country Escudo',
+        Price: 10.5,
+        Currency: 'ESC'
+    }
+];
 
 var listBeerBox = [
     {
