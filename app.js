@@ -79,39 +79,41 @@ app.post('/beers', function (req, res) {
         return element.Id === req.body.Id;
     });
 
+    res.setHeader('Content-Type', 'application/json');
+
     if (typeof idDuplicado !== "undefined") {
-        res.status(409).send(JSON.stringify({ description: 'El ID de la cerveza ya existe'}));
+        res.status(409).send({ description: 'El ID de la cerveza ya existe'});
     } else {
         if (requestInvalida){
-            res.status(400).send(JSON.stringify({ description: 'Request invalida'}));
+            res.status(400).send({ description: 'Request invalida'});
         } else {
             arregloDeCervezas.push(req.body);
-            res.send(JSON.stringify({ description: 'Cerveza creada'}));
+            res.send({ description: 'Cerveza creada'});
         }
     }
-
 });
 
 app.get('/beers', function (req, res) {
-    res.send(JSON.stringify(arregloDeCervezas));
+    res.setHeader('Content-Type', 'application/json');
+    res.send(arregloDeCervezas);
 });
 
 app.get('/beers/:id', function (req, res) {
     var beer = arregloDeCervezas.find(function(element) {
         return element.Id == req.params.id;
     });
+    res.setHeader('Content-Type', 'application/json');
     if (typeof beer === "undefined")
     {
-        res.status(404).send(JSON.stringify({ description: 'El Id de la cerveza no existe'}));
+        res.status(404).send({ description: 'El Id de la cerveza no existe'});
     }
     else
     {
         res.send(
-            JSON.stringify(
             {
                 description: 'Operacion exitosa',
                 beer: beer
-            })
+            }
         );
     }
 });
@@ -128,13 +130,13 @@ app.get('/beers/:id/boxprice', function (req, res) {
         indice++;
     }
 
+    res.setHeader('Content-Type', 'application/json');
     if (beerBox === null)
     {
-        res.status(404).send(JSON.stringify({ description: 'El Id de la cerveza no existe'}));
+        res.status(404).send({ description: 'El Id de la cerveza no existe'});
     }
     else
     {
-        res.setHeader('Content-Type', 'application/json');
         res.send(beerBox);
     }
 });
