@@ -39,17 +39,59 @@ app.get('/', function (req, res) {
 });
 
 app.post('/beers', function (req, res) {
+    var requestInvalida = false;
     // validar los tipos
-    console.log("");
-    console.log(" ------- req.body ------- ");
-    console.log(req.body);
-    console.log(" ------- req.body ------- ");
-    console.log("");
-    res.send(JSON.stringify({ Hello: 'Post Recivido'}));
+    if (
+        typeof req.body.Id !== "number"
+        || typeof req.body.Name !== "string"
+        || typeof req.body.Brewery !== "string"
+        || typeof req.body.Country !== "string"
+        || typeof req.body.Price !== "number"
+        || typeof req.body.Currency !== "string"
+    )
+    {
+        requestInvalida = true;
+    }
+
+    var idDuplicado = arregloDeCervezas.find(function(element) {
+        return element.Id === req.body.Id;
+    });
+
+    if (typeof idDuplicado !== "undefined") {
+        res.status(409).send(JSON.stringify({ description: 'El ID de la cerveza ya existe'}));
+    } else {
+        if (requestInvalida){
+            res.status(400).send(JSON.stringify({ description: 'Request invalida'}));
+        } else {
+            arregloDeCervezas.push(req.body);
+            res.send(JSON.stringify({ Hello: 'Cerveza creada'}));
+        }
+    }
+
 });
 
-app.post('/beers', function (req, res) {
+app.get('/beers', function (req, res) {
     res.send(JSON.stringify(arregloDeCervezas));
+});
+
+app.get('/beers/:id', function (req, res) {
+    var beer = arregloDeCervezas.find(function(element) {
+        return element.Id == req.params.id;
+    });
+    if (typeof beer === "undefined")
+    {
+        res.status(404).send(JSON.stringify({ description: 'El Id de la cerveza no existe'}));
+    }
+    else
+    {
+        res.send(
+            JSON.stringify(
+            {
+                description: 'Operacion exitosa',
+                beer: beer
+            })
+        );
+    }
 });
 
 
