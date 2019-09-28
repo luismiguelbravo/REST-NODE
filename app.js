@@ -13,7 +13,7 @@ var arregloDeCervezas = [
         Name: 'Golden',
         Brewery: 'Kross',
         Country: 'Chile',
-        Price: 10.5,
+        Price: 5.5,
         Currency: 'EUR'
     },
     {
@@ -29,32 +29,10 @@ var arregloDeCervezas = [
         Name: 'Escudo',
         Brewery: 'Escudo Royal',
         Country: 'Country Escudo',
-        Price: 10.5,
-        Currency: 'ESC'
+        Price: 20.5,
+        Currency: 'CLP'
     }
 ];
-
-var listBeerBox = [
-    {
-        boxBeerPriceById: 1,
-        beerId: 1,
-        priceTotal : 57,
-        beer: arregloDeCervezas[0]
-    },
-    {
-        boxBeerPriceById: 2,
-        beerId: 2,
-        priceTotal : 58,
-        beer: arregloDeCervezas[1]
-    },
-    {
-        boxBeerPriceById: 3,
-        beerId: 3,
-        priceTotal : 59,
-        beer: arregloDeCervezas[2]
-    },
-];
-
 
 app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
@@ -120,24 +98,20 @@ app.get('/beers/:id', function (req, res) {
 
 app.get('/beers/:id/boxprice', function (req, res) {
 
-    var indice = 0;
-    var beerBox = null;
-    while(indice < listBeerBox.length) {
-        if (listBeerBox[indice].beer.Id == req.params.id)
-        {
-            beerBox = listBeerBox[indice];
-        }
-        indice++;
-    }
-
+    var beer = arregloDeCervezas.find(function(element) {
+        return element.Id == req.params.id;
+    });
     res.setHeader('Content-Type', 'application/json');
-    if (beerBox === null)
+    if (typeof beer === "undefined")
     {
         res.status(404).send({ description: 'El Id de la cerveza no existe'});
     }
     else
     {
-        res.send(beerBox);
+        res.send({
+            Quantity : 6,
+            PriceTotal : 6 * beer.Price
+        });
     }
 });
 
