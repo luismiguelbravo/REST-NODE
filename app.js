@@ -34,6 +34,28 @@ var arregloDeCervezas = [
         }
     ];
 
+var listBeerBox = [
+    {
+        boxBeerPriceById: 1,
+        beerId: 1,
+        priceTotal : 57,
+        beer: arregloDeCervezas[0]
+    },
+    {
+        boxBeerPriceById: 2,
+        beerId: 2,
+        priceTotal : 58,
+        beer: arregloDeCervezas[1]
+    },
+    {
+        boxBeerPriceById: 3,
+        beerId: 3,
+        priceTotal : 59,
+        beer: arregloDeCervezas[2]
+    },
+];
+
+
 app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
 });
@@ -64,7 +86,7 @@ app.post('/beers', function (req, res) {
             res.status(400).send(JSON.stringify({ description: 'Request invalida'}));
         } else {
             arregloDeCervezas.push(req.body);
-            res.send(JSON.stringify({ Hello: 'Cerveza creada'}));
+            res.send(JSON.stringify({ description: 'Cerveza creada'}));
         }
     }
 
@@ -91,6 +113,29 @@ app.get('/beers/:id', function (req, res) {
                 beer: beer
             })
         );
+    }
+});
+
+app.get('/beers/:id/boxprice', function (req, res) {
+
+    var indice = 0;
+    var beerBox = null;
+    while(indice < listBeerBox.length) {
+        if (listBeerBox[indice].beer.Id == req.params.id)
+        {
+            beerBox = listBeerBox[indice];
+        }
+        indice++;
+    }
+
+    if (beerBox === null)
+    {
+        res.status(404).send(JSON.stringify({ description: 'El Id de la cerveza no existe'}));
+    }
+    else
+    {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(beerBox);
     }
 });
 
