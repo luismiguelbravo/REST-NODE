@@ -6,6 +6,9 @@ var app = express();
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+var request = require('request');
+const axios = require('axios');
+
 
 var arregloDeCervezas = [
     {
@@ -22,7 +25,7 @@ var arregloDeCervezas = [
         Brewery: 'Brewery Royal',
         Country: 'Country Royal',
         Price: 10.5,
-        Currency: 'ROY'
+        Currency: 'USD'
     },
     {
         Id: 3,
@@ -96,8 +99,8 @@ app.get('/beers/:id', function (req, res) {
     }
 });
 
+// se convierten todos los montos a CLP para pagar en Pesos Chilenos
 app.get('/beers/:id/boxprice', function (req, res) {
-
     var beer = arregloDeCervezas.find(function(element) {
         return element.Id == req.params.id;
     });
@@ -108,12 +111,44 @@ app.get('/beers/:id/boxprice', function (req, res) {
     }
     else
     {
-        res.send({
-            Quantity : 6,
-            PriceTotal : 6 * beer.Price
-        });
+        /*
+        // http://localhost:3000/
+        // http://apilayer.net
+        */
+        axios.get('http://apilayer.net/api/live?access_key=7d0ba48bf417e21212a140957e3221f3&currencies='+ beer.Currency +',CLP')
+            .then(response => {
+                var precioDeCaja = beer.Price / response.data.quotes['USD' + beer.Currency] * response.data.quotes['USDCLP'];
+                res.send({
+                    Quantity : 6,
+                    PriceTotal : 6 * precioDeCaja,
+                    Currency: 'CLP'
+                });
+            })
+            .catch(error => {
+                res.status(500).send({ description: 'Falla en el servicio de conversion de monedas'});
+            });
     }
 });
+
+
+// Funcion para hacer mock de /api/live y evitar consumirme los 250 request mensuales del plan free
+app.get('/api/live', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var jsonResult = {
+        success: true,
+        terms: "https://currencylayer.com/terms",
+        privacy: "https://currencylayer.com/privacy",
+        timestamp: 1569773347,
+        source: "USD",
+        quotes: {
+            USDUSD: 1,
+            USDEUR: 0.91399,
+            USDCLP: 726.285041
+        }
+    }
+    res.send(jsonResult);
+});
+
 
 
 app.listen(port, function () {
