@@ -1,4 +1,4 @@
-instalar el proyecto
+Instalar el proyecto
 
 $ npm install
 
@@ -9,3 +9,6 @@ $ npm start
 ejecutar los test
 
 $ test-cover
+
+El proyecto fue instalado en heroku
+url de heroku: https://secret-gorge-52636.herokuapp.com/
