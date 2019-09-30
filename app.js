@@ -38,7 +38,8 @@ var arregloDeCervezas = [
 ];
 
 app.get('/', function (req, res) {
-    res.send(JSON.stringify({ Hello: 'World'}));
+    res.setHeader('Content-Type', 'application/json');
+    res.send({ Hello: 'World'});
 });
 
 app.post('/beers', function (req, res) {
@@ -115,7 +116,7 @@ app.get('/beers/:id/boxprice', function (req, res) {
         // http://localhost:3000/
         // http://apilayer.net
         */
-        axios.get('http://localhost:3000/api/live?access_key=7d0ba48bf417e21212a140957e3221f3&currencies='+ beer.Currency +',CLP')
+        axios.get('http://apilayer.net/api/live?access_key=7d0ba48bf417e21212a140957e3221f3&currencies='+ beer.Currency +',CLP')
             .then(response => {
                 var precioDeCaja = beer.Price / response.data.quotes['USD' + beer.Currency] * response.data.quotes['USDCLP'];
                 res.send({
@@ -149,8 +150,8 @@ app.get('/api/live', function (req, res) {
     res.send(jsonResult);
 });
 
-
-
 app.listen(port, function () {
     console.log('Example app listening on port !');
 });
+
+module.exports = app;
