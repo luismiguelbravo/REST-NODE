@@ -10,5 +10,4 @@ ejecutar los test
 
 $ test-cover
 
-El proyecto fue instalado en heroku
-url de heroku: https://secret-gorge-52636.herokuapp.com/
+El proyecto fue instalado en heroku : https://secret-gorge-52636.herokuapp.com/
