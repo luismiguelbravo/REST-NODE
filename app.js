@@ -115,7 +115,7 @@ app.get('/beers/:id/boxprice', function (req, res) {
         // http://localhost:3000/
         // http://apilayer.net
         */
-        axios.get('http://apilayer.net/api/live?access_key=7d0ba48bf417e21212a140957e3221f3&currencies='+ beer.Currency +',CLP')
+        axios.get('http://localhost:3000/api/live?access_key=7d0ba48bf417e21212a140957e3221f3&currencies='+ beer.Currency +',CLP')
             .then(response => {
                 var precioDeCaja = beer.Price / response.data.quotes['USD' + beer.Currency] * response.data.quotes['USDCLP'];
                 res.send({
